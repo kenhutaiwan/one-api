@@ -88,6 +88,7 @@ func ConvertRequest(textRequest model.GeneralOpenAIRequest) *Request {
 	} else if claudeRequest.Model == "claude-2" {
 		claudeRequest.Model = "claude-2.1"
 	}
+	claudeRequest.Messages = make([]Message, 0, len(textRequest.Messages))
 	for _, message := range textRequest.Messages {
 		if message.Role == "system" && claudeRequest.System == "" {
 			claudeRequest.System = message.StringContent()
@@ -107,6 +108,13 @@ func ConvertRequest(textRequest model.GeneralOpenAIRequest) *Request {
 				content.Text = ""
 				content.ToolUseId = message.ToolCallId
 			}
+
+			// 2024-10-12 Ken Hu: prevent HTTP 400 messages.1.content.0.text.text: Field required
+			if message.Role == "assistant" && message.StringContent() == "" {
+				logger.SysLog("one-api/relay/adaptor/anthropic/main.go: Fill in the missing values not allowed by the Claude model")
+				content.Text = "Ignore this, Claude does not allow missing Text"
+			}
+
 			claudeMessage.Content = append(claudeMessage.Content, content)
 			for i := range message.ToolCalls {
 				inputParam := make(map[string]any)

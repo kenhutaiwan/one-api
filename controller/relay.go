@@ -47,7 +47,8 @@ func Relay(c *gin.Context) {
 	relayMode := relaymode.GetByPath(c.Request.URL.Path)
 	if config.DebugEnabled {
 		requestBody, _ := common.GetRequestBody(c)
-		logger.Debugf(ctx, "request body: %s", string(requestBody))
+		// 2024-10-12 Ken Hu: add go file name
+		logger.Debugf(ctx, "one-api/controller/relay.go request body: %s", string(requestBody))
 	}
 	channelId := c.GetInt(ctxkey.ChannelId)
 	userId := c.GetInt(ctxkey.Id)
