@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM node:16 AS builder
+FROM --platform=$BUILDPLATFORM docker.io/node:16 AS builder
 
 WORKDIR /web
 COPY ./VERSION .
@@ -14,7 +14,7 @@ RUN DISABLE_ESLINT_PLUGIN='true' REACT_APP_VERSION=$(cat ./VERSION) npm run buil
     DISABLE_ESLINT_PLUGIN='true' REACT_APP_VERSION=$(cat ./VERSION) npm run build --prefix /web/air & \
     wait
 
-FROM golang:alpine AS builder2
+FROM docker.io/golang:alpine AS builder2
 
 RUN apk add --no-cache \
     gcc \
@@ -36,7 +36,7 @@ COPY --from=builder /web/build ./web/build
 
 RUN go build -trimpath -ldflags "-s -w -X 'github.com/songquanpeng/one-api/common.Version=$(cat VERSION)' -linkmode external -extldflags '-static'" -o one-api
 
-FROM alpine:latest
+FROM docker.io/alpine:latest
 
 RUN apk add --no-cache ca-certificates tzdata
 

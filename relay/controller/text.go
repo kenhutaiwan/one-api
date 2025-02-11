@@ -104,14 +104,12 @@ func getRequestBody(c *gin.Context, meta *meta.Meta, textRequest *model.GeneralO
 		logger.Debugf(c.Request.Context(), "converted request failed: %s\n", err.Error())
 		return nil, err
 	}
-
 	jsonData, err := json.Marshal(convertedRequest)
 	if err != nil {
 		logger.Debugf(c.Request.Context(), "converted request json_marshal_failed: %s\n", err.Error())
 		return nil, err
 	}
-	// 2024-10-12 Ken Hu: add go file name
-	logger.Debugf(c.Request.Context(), "one-api/relay/controller/text.go converted request: \n%s", string(jsonData))
+	logger.Debugf(c.Request.Context(), "converted request: \n%s", string(jsonData))
 	requestBody = bytes.NewBuffer(jsonData)
 	return requestBody, nil
 }
