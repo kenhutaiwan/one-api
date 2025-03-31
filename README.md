@@ -72,7 +72,7 @@ _✨ 通过标准的 OpenAI API 格式访问所有的大模型，开箱即用 �
    + [x] [Anthropic Claude 系列模型](https://anthropic.com) (支持 AWS Claude)
    + [x] [Google PaLM2/Gemini 系列模型](https://developers.generativeai.google)
    + [x] [Mistral 系列模型](https://mistral.ai/)
-   + [x] [字节跳动豆包大模型](https://console.volcengine.com/ark/region:ark+cn-beijing/model)
+   + [x] [字节跳动豆包大模型（火山引擎）](https://www.volcengine.com/experience/ark?utm_term=202502dsinvite&ac=DSASUQY5&rc=2QXCA1VI)
    + [x] [百度文心一言系列模型](https://cloud.baidu.com/doc/WENXINWORKSHOP/index.html)
    + [x] [阿里通义千问系列模型](https://help.aliyun.com/document_detail/2400395.html)
    + [x] [讯飞星火认知大模型](https://www.xfyun.cn/doc/spark/Web.html)
@@ -115,7 +115,7 @@ _✨ 通过标准的 OpenAI API 格式访问所有的大模型，开箱即用 �
 19. 支持丰富的**自定义**设置，
     1. 支持自定义系统名称，logo 以及页脚。
     2. 支持自定义首页和关于页面，可以选择使用 HTML & Markdown 代码进行自定义，或者使用一个单独的网页通过 iframe 嵌入。
-20. 支持通过系统访问令牌调用管理 API，进而**在无需二开的情况下扩展和自定义** One API 的功能，详情请参考此处 [API 文档](./docs/API.md)。。
+20. 支持通过系统访问令牌调用管理 API，进而**在无需二开的情况下扩展和自定义** One API 的功能，详情请参考此处 [API 文档](./docs/API.md)。
 21. 支持 Cloudflare Turnstile 用户校验。
 22. 支持用户管理，支持**多种用户登录注册方式**：
     + 邮箱登录注册（支持注册邮箱白名单）以及通过邮箱进行密码重置。
