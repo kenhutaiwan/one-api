@@ -110,9 +110,20 @@ func ConvertRequest(textRequest model.GeneralOpenAIRequest) *Request {
 			}
 
 			// 2024-10-12 Ken Hu: prevent HTTP 400 messages.1.content.0.text.text: Field required
+			//
+			//[openai_api_compatible] Error: PluginInvokeError: {"args":{"description":"[models]
+			//Error: API request failed with status code 400:
+			//{\"error\":{\"message\":\"messages.1.content.0.text.text: Field required
+			//(request id: 2025052715203294229315045251122)\",\"type\":\"invalid_request_error\",\"param\":\"\",\"code\":null}}"},
+			//"error_type":"InvokeError","message":"[models] Error: API request failed with status code 400:
+			//{\"error\":{\"message\":\"messages.1.content.0.text.text:
+			//Field required (request id: 2025052715203294229315045251122)\",
+			//\"type\":\"invalid_request_error\",\"param\":\"\",\"code\":null}}
 			if message.Role == "assistant" && message.StringContent() == "" {
 				logger.SysLog("one-api/relay/adaptor/anthropic/main.go: Fill in the missing values not allowed by the Claude model")
-				content.Text = "Ignore this, Claude does not allow missing Text"
+				// 2025-05-27 Ken Hu: change text to ... because users will see these text in some situations
+				// content.Text = "Ignore this, Claude does not allow missing Text"
+				content.Text = "..."
 			}
 
 			claudeMessage.Content = append(claudeMessage.Content, content)
