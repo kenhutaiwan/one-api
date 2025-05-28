@@ -70,6 +70,22 @@ func RelayTextHelper(c *gin.Context) *model.ErrorWithStatusCode {
 		logger.Errorf(ctx, "DoRequest failed: %s", err.Error())
 		return openai.ErrorWrapper(err, "do_request_failed", http.StatusInternalServerError)
 	}
+	// 2025-05-28 Ken Hu: 記錄外部 API 的回應（DEBUG 級別）
+	if config.DebugEnabled {
+		if resp != nil && resp.Body != nil {
+			// 讀取 Response Body
+			bodyBytes, readErr := io.ReadAll(resp.Body)
+			if readErr != nil {
+				logger.Warnf(ctx, "Failed to read response body for logging: %s", readErr.Error())
+			} else {
+				logger.Debugf(ctx, "External API response body: %s", string(bodyBytes))
+			}
+			// 重要：重設 Response Body，以便後續處理可以使用
+			resp.Body = io.NopCloser(bytes.NewBuffer(bodyBytes))
+		} else {
+			logger.Debugf(ctx, "External API response body is nil")
+		}
+	}
 	if isErrorHappened(meta, resp) {
 		billing.ReturnPreConsumedQuota(ctx, preConsumedQuota, meta.TokenId)
 		return RelayErrorHandler(resp)
